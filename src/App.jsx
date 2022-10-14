@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import "./App.css";
 
-const socket = io("http://127.0.0.1:3000/");
+const socket = io(import.meta.env.VITE_API_URL);
 
 function App() {
   const [currentMessage, setCurrentMessage] = useState("");
