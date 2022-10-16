@@ -1,12 +1,12 @@
-import "./App.css";
-import Room from "./pages/Room";
+import './App.css'
+import Room from './pages/Room'
 
 function App() {
   return (
     <>
       <Room />
     </>
-  );
+  )
 }
 
-export default App;
+export default App
