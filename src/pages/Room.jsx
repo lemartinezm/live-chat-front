@@ -23,6 +23,10 @@ function Room() {
     setCurrentMessage('')
   }
   return (
+    <>
+    <header>
+      <h1 className='font-bungee text-primary' >Whatscord</h1>
+    </header>
     <main className='App'>
       <ul id='messages'>
         {messages.map((message, index) => (
@@ -40,6 +44,7 @@ function Room() {
         <button type='submit'>Send</button>
       </form>
     </main>
+    </>
   )
 }
 
