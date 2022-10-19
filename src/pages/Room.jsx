@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { io } from 'socket.io-client'
 import Header from '../components/header/Header'
 import Message from '../components/message/Message'
+import RoomDescription from '../components/roomDescription/RoomDescription'
 
 const socket = io(import.meta.env.VITE_API_URL)
 
@@ -33,6 +34,10 @@ function Room() {
     <>
       <Header />
       <main className='App mx-auto my-4 flex w-full max-w-xs flex-1 flex-col gap-4'>
+        <RoomDescription
+          title='Los egresados de éxito'
+          number={142}
+        />
         <label className='flex gap-2'>
           Nickname:
           <input
