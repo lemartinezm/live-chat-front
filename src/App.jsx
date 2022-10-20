@@ -1,8 +1,8 @@
-import Room from './pages/Room'
+import Room from './pages/Room/Room'
 
 function App() {
   return (
-    <div className='flex min-h-screen w-full flex-col'>
+    <div className='flex h-screen w-full flex-col'>
       <Room />
     </div>
   )
