@@ -46,7 +46,7 @@ function Room() {
           number={roomNumber}
         />
 
-        <label className='flex gap-2 items-center'>
+        <label className='flex items-center gap-2'>
           <span className='font-bold text-primary'>Nickname:</span>
           <input
             id='nickname'
