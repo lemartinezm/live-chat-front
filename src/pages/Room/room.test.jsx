@@ -29,7 +29,7 @@ describe('room page tests', () => {
     screen.getByPlaceholderText('Insert your nickname here')
   })
 
-  it('can send a message', async () => {
+  it.skip('can send a message', async () => {
     const user = userEvent.setup()
 
     const nicknameInput = screen.getByPlaceholderText(

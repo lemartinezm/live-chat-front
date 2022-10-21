@@ -5,9 +5,28 @@ import Message from '../../components/message/Message'
 import RoomDescription from '../../components/roomDescription/RoomDescription'
 import shake from '../../assets/shake.svg'
 import biSend from '../../assets/bi_send.svg'
+import Drawer from '../../components/drawer/Drawer'
+import User from '../../components/user/User'
 
 export const roomTitle = 'Los egresados de exito'
 export const roomNumber = 142
+export const users = [
+  {
+    id: 1,
+    nickname: 'Cabra',
+    status: 'Online',
+  },
+  {
+    id: 2,
+    nickname: 'Sandy',
+    status: 'Ausent',
+  },
+  {
+    id: 3,
+    nickname: 'Villa',
+    status: 'Offline',
+  },
+]
 
 const socket = io(import.meta.env.VITE_API_URL)
 
@@ -15,6 +34,7 @@ function Room() {
   const [currentMessage, setCurrentMessage] = useState('')
   const [messages, setMessages] = useState([])
   const [nickname, setNickname] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     socket.on('chat message', (msg) => {
@@ -38,15 +58,42 @@ function Room() {
     setCurrentMessage('')
   }
   return (
-    <>
-      <Header />
+    <div className='flex h-screen w-full flex-col lg:flex-row'>
+      <Drawer
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title='Users'
+      >
+        <div className='flex flex-col gap-4'>
+          {users.map((user) => (
+            <User
+              key={user.id}
+              nickname={user.nickname}
+              currentStatus={user.status}
+            />
+          ))}
+        </div>
+      </Drawer>
+
+      <div className='border-r border-black-25'>
+        <Header onSocialClick={() => setIsOpen(true)} />
+        <div className='hidden flex-col gap-4 lg:flex px-8 py-4'>
+          {users.map((user) => (
+            <User
+              key={user.id}
+              nickname={user.nickname}
+              currentStatus={user.status}
+            />
+          ))}
+        </div>
+      </div>
       <main className='App flex w-full flex-1 flex-col gap-4 overflow-hidden p-4'>
         <RoomDescription
           title={roomTitle}
           number={roomNumber}
         />
 
-        <label className='flex gap-2 items-center'>
+        <label className='flex items-center gap-2'>
           <span className='font-bold text-primary'>Nickname:</span>
           <input
             id='nickname'
@@ -107,7 +154,7 @@ function Room() {
           </button>
         </form>
       </main>
-    </>
+    </div>
   )
 }
 
