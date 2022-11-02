@@ -6,7 +6,7 @@ function Drawer({ title, isOpen, onClose, children }) {
     <div
       className={`absolute z-50 bg-white ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
-      } h-screen w-3/4 max-w-md border-r border-black-10 transition-transform`}
+      } h-screen w-3/4 max-w-md border-r border-black-10 transition-transform overflow-hidden`}
       aria-label='drawer'
     >
       <div className='flex gap-4 border-b border-black-10 p-4'>
