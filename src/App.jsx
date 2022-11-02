@@ -1,9 +1,11 @@
-import Room from './pages/Room/Room'
+import Home from './pages/Home/Home'
+// import Room from './pages/Room/Room'
 
 function App() {
   return (
     <>
-      <Room />
+      <Home />
+      {/* <Room /> */}
     </>
   )
 }
