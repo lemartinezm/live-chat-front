@@ -29,11 +29,13 @@ export const users = [
 ]
 
 const socket = io(import.meta.env.VITE_API_URL)
+let timeoutId
 
 function Room() {
   const [currentMessage, setCurrentMessage] = useState('')
   const [messages, setMessages] = useState([])
   const [nickname, setNickname] = useState('')
+  const [usersWriting, setUsersWriting] = useState([])
   const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
@@ -41,13 +43,23 @@ function Room() {
       setMessages((prev) => [...prev, msg])
     })
 
+    socket.on('writing', (userWriting) => {
+      if (!usersWriting.includes(userWriting) && userWriting !== nickname) {
+        setUsersWriting((prev) => Array.from(new Set([...prev, userWriting])))
+      }
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => {
+        setUsersWriting([])
+      }, 1000)
+    })
+
     return () => {
       socket.off('chat message')
+      socket.off('writing')
     }
   }, [])
 
   const handleSubmit = (e) => {
-    console.log('handle submit')
     e.preventDefault()
     if (nickname && currentMessage) {
       socket.emit('chat message', {
@@ -57,6 +69,12 @@ function Room() {
     }
     setCurrentMessage('')
   }
+
+  const handleWriting = (e) => {
+    setCurrentMessage(e.target.value)
+    socket.emit('writing', nickname)
+  }
+
   return (
     <div className='flex h-screen w-full flex-col lg:flex-row'>
       <Drawer
@@ -77,7 +95,7 @@ function Room() {
 
       <div className='border-r border-black-25'>
         <Header onSocialClick={() => setIsOpen(true)} />
-        <div className='hidden flex-col gap-4 lg:flex px-8 py-4'>
+        <div className='hidden flex-col gap-4 px-8 py-4 lg:flex'>
           {users.map((user) => (
             <User
               key={user.id}
@@ -118,7 +136,24 @@ function Room() {
               user={nickname}
             />
           ))}
-          {messages.length === 0 && <p>There is no messages</p>}
+          {messages.length === 0 && <p>There are no messages</p>}
+        </div>
+
+        <div
+          className={
+            usersWriting.length > 0
+              ? 'opacity-100 transition-opacity'
+              : 'opacity-0'
+          }
+        >
+          {usersWriting.map((userWriting, index) => (
+            <span
+              key={index}
+              className='italic text-black-75'
+            >
+              {userWriting} is writing...
+            </span>
+          ))}
         </div>
 
         <form
@@ -131,7 +166,7 @@ function Room() {
             className='flex-1 rounded-3xl border border-black-25 px-4 py-2'
             placeholder='Write your message here'
             value={currentMessage}
-            onChange={(e) => setCurrentMessage(e.target.value)}
+            onChange={handleWriting}
           />
 
           <button
