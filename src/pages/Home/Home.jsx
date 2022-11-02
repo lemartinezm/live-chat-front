@@ -10,6 +10,10 @@ function Home() {
     setIsOpen(false)
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+  }
+
   return (
     <div className='flex min-h-screen w-full flex-col'>
       <Drawer
@@ -17,7 +21,10 @@ function Home() {
         title='User info'
         onClose={handleClose}
       >
-        <div className='flex flex-col gap-4'>
+        <form
+          className='flex flex-col gap-4'
+          onSubmit={handleSubmit}
+        >
           <img
             src={`https://source.boringavatars.com/beam/32/${nickname}?colors=233D4D,619B8A,D7E6E2`}
             alt={`${nickname}-avatar`}
@@ -44,7 +51,14 @@ function Home() {
               <option value='offline'>Offline</option>
             </select>
           </label>
-        </div>
+
+          <button
+            type='submit'
+            className='mt-4 rounded-[32px] bg-primary px-8 py-4 text-lg font-bold text-white'
+          >
+            Save changes
+          </button>
+        </form>
       </Drawer>
 
       <header className='flex w-full justify-between border-b p-4'>
